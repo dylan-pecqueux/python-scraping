@@ -30,7 +30,7 @@ def get_books(category_name, links):
                     soup.select_one('.item img')['src'].replace('../../', '')
 
                 outf.write(title.text.replace(',', ' - ') + ',' + l + ',' +
-                           tr[0].text + ',' + tr[3].text + ',' + tr[2].text + ',' + tr[5].text + ',' + description.replace(',', ' ').replace(';', ' ') + ',' + 'mystery' + ',' + rating + ',' + img_url + '\n')
+                           tr[0].text + ',' + tr[3].text + ',' + tr[2].text + ',' + tr[5].text + ',' + description.replace(',', ' ').replace(';', ' ') + ',' + category_name + ',' + rating + ',' + img_url + '\n')
 
 
 def get_links(url, category_name):
