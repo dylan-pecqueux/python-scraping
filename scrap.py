@@ -4,7 +4,6 @@ import csv
 import io
 from PIL import Image
 import os.path
-import hashlib
 
 
 def save_img(url, name):
