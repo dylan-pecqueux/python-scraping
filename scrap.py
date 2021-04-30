@@ -1,6 +1,29 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
+import io
+from PIL import Image
+import os.path
+import hashlib
+
+
+def save_img(url):
+    try:
+        image_content = requests.get(url).content
+
+    except Exception as e:
+        print(f"ERROR - Could not download {url} - {e}")
+
+    try:
+        image_file = io.BytesIO(image_content)
+        image = Image.open(image_file).convert('RGB')
+        file_path = os.path.join('./images', hashlib.sha1(
+            image_content).hexdigest()[:10] + '.jpg')
+        with open(file_path, 'wb') as f:
+            image.save(f, "JPEG", quality=85)
+        print(f"SUCCESS - saved {url} - as {file_path}")
+    except Exception as e:
+        print(f"ERROR - Could not save {url} - {e}")
 
 
 def get_books(category_name, links):
@@ -28,6 +51,8 @@ def get_books(category_name, links):
                 rating = soup.select_one('.star-rating')['class'][1]
                 img_url = 'http://books.toscrape.com/' + \
                     soup.select_one('.item img')['src'].replace('../../', '')
+
+                save_img(img_url)
 
                 outf.write(title.text.replace(',', ' - ') + ',' + l + ',' +
                            tr[0].text + ',' + tr[3].text + ',' + tr[2].text + ',' + tr[5].text + ',' + description.replace(',', ' ').replace(';', ' ') + ',' + category_name + ',' + rating + ',' + img_url + '\n')
