@@ -22,6 +22,19 @@ def save_img(url, name):
             print(f"ERROR - Could not save {url} - {e}")
 
 
+def transform_rating(rating):
+    if rating == 'One':
+        return '1/5'
+    elif rating == 'Two':
+        return '2/5'
+    elif rating == 'Three':
+        return '3/5'
+    elif rating == 'Four':
+        return '4/5'
+    else:
+        return '5/5'
+
+
 def get_books(category_name, links):
     file_name = './csv/' + category_name.strip().replace(' ', '-') + '.csv'
     with open(file_name, 'w') as outf:
@@ -45,7 +58,8 @@ def get_books(category_name, links):
                 except Exception as e:
                     print('Error - {e}')
                     description = "None"
-                rating = soup.select_one('.star-rating')['class'][1]
+                get_rating = soup.select_one('.star-rating')['class'][1]
+                rating = transform_rating(get_rating)
                 img_url = 'http://books.toscrape.com/' + \
                     soup.select_one('.item img')['src'].replace('../../', '')
                 print(title)
