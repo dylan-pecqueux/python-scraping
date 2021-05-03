@@ -8,7 +8,6 @@ import os.path
 
 def save_img(url, name):
     response = requests.get(url)
-
     if response.ok:
         try:
             image_file = io.BytesIO(response.content)
@@ -23,16 +22,8 @@ def save_img(url, name):
 
 
 def transform_rating(rating):
-    if rating == "One":
-        return "1/5"
-    elif rating == "Two":
-        return "2/5"
-    elif rating == "Three":
-        return "3/5"
-    elif rating == "Four":
-        return "4/5"
-    else:
-        return "5/5"
+    ratings = {"One": "1/5", "Two": "2/5", "Three": "3/5", "Four": "4/5", "Five": "5/5"}
+    return ratings[rating]
 
 
 def get_book_info(link):
